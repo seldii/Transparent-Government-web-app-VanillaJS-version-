@@ -1,11 +1,10 @@
-var data ={
+var data = {
    "status":"OK",
    "copyright":" Copyright (c) 2019 Pro Publica Inc. All Rights Reserved.",
-   "results":[
-      {
+   "results":{
+       
          "congress": "113",
          "chamber": "House",
-         
          
          "num_results": 450,
          "offset": 0,
@@ -20711,12 +20710,106 @@ var data ={
                  "votes_with_party_pct": 91.40
                }
              ]
-      }
-   ]
+      
+   }
 }
 
 
- 
+ var headers = ["Congressmen", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "]
+
+
+function createTHead(table, headerArr) {
+
+    var row = document.createElement("tr");
+
+    for (var i = 0; i < headerArr.length; i++) {
+        var th = document.createElement("th");
+        var text = document.createTextNode(headerArr[i]);
+        row.appendChild(th);
+        th.appendChild(text);
+        thead.appendChild(row);
+    }
+}
+
+
+
+function generateTable(table, data) {
+
+
+    for (var i = 0; i < data.results.members.length; i++) {
+
+        if (data.results.members[i].first_name) {
+            var row = document.createElement("tr");
+            var cell = document.createElement("td");
+            var a = document.createElement('a');
+            a.setAttribute("href", data.results.members[i].url );
+            cell.appendChild(a);
+           var fullName = data.results.members[i].first_name + " " + (data.results.members[i].middle_name || "") + " " + data.results.members[i].last_name;
+            a.innerHTML = fullName;
+           /* a.innerHTML = */
+            row.appendChild(cell);
+            tblBody.appendChild(row);
+
+           
+        }
+
+
+        if (data.results.members[i].party) {
+
+            var cell = document.createElement("td");
+            var cellText = document.createTextNode(data.results.members[i].party);
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+            tblBody.appendChild(row);
+        }
+
+
+        if (data.results.members[i].state) {
+
+            var cell = document.createElement("td");
+            var cellText = document.createTextNode(data.results.members[i].state);
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+            tblBody.appendChild(row);
+
+        }
+
+        if (data.results.members[i].seniority) {
+
+            var cell = document.createElement("td");
+            var cellText = document.createTextNode(data.results.members[i].seniority);
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+            tblBody.appendChild(row);
+        }
+
+
+        if (data.results.members[i].votes_with_party_pct) {
+
+            var cell = document.createElement("td");
+            var cellText = document.createTextNode(data.results.members[i].votes_with_party_pct+ " %");
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+            tblBody.appendChild(row);
+        }
+
+    }
+
+}
+
+var tbl = document.getElementById("table-house");
+
+
+var tblBody = document.createElement("tbody");
+var thead = document.createElement("thead");
+
+tbl.appendChild(tblBody);
+tbl.appendChild(thead);
+
+
+createTHead(tbl, headers);
+generateTable(tbl, data);
+
 
 
 

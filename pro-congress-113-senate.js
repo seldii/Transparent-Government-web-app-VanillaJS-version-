@@ -4843,7 +4843,7 @@ var data = {
     }
 }
 
-var headers = ["Senator", "Party Affilication", "State", "Seniority", "Percentage of votes with party (%)"]
+var headers = ["Senator", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "]
 
 
 function createTHead(table, headerArr) {
@@ -4868,6 +4868,7 @@ function generateTable(table, data) {
 
         if (data.results.members[i].first_name) {
             var row = document.createElement("tr");
+            row.setAttribute("scope", "row")
             var cell = document.createElement("td");
             var a = document.createElement('a');
             a.setAttribute("href", data.results.members[i].url );
@@ -4925,15 +4926,14 @@ function generateTable(table, data) {
 
 }
 
-var body = document.getElementsByTagName("body")[0];
-var tbl = document.querySelector("table");
+var tbl = document.getElementById("table-senate");
+
+
 var tblBody = document.createElement("tbody");
 var thead = document.createElement("thead");
 
-body.appendChild(tbl);
 tbl.appendChild(tblBody);
 tbl.appendChild(thead);
-tbl.setAttribute("border", "2");
 
 createTHead(tbl, headers);
 generateTable(tbl, data);
