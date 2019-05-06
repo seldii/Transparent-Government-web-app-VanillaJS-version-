@@ -4,35 +4,33 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-4">
-                <a href="index.html"><img class="img-responsive" src="images/LOGOTGIF.jpg"></a>
+                <a href="index.html"><img class="img-fluid" alt="Responsive image" src="images/LOGOTGIF.jpg"></a>
             </div>
             <div class="col-sm-8 text-right">
-                <a href="mailto:seldaguzel@gmail.com"><span class="glyphicon glyphicon-envelope"></span></a><a href="mailto:seldaguzel@gmail.com">info@tgif.net</a>
+                <a href="mailto:seldaguzel@gmail.com"><span class="fa fa-envelope"></span></a><a href="mailto:seldaguzel@gmail.com">info@tgif.net</a>
             </div>
         </div>
     </div>
-    <div class="row">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    <li><a href="index.html">Home</a></li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Congress 113
-                            <span class="caret"></span></a>
 
-                        <ul class="dropdown-menu">
-                            <li><a href="senate-starter-page.html">Senate</a></li>
-                            <li><a href="house-starter-page.html">House</a></li>
-                        </ul>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item dropdown" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Congress 113</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="senate-starter-page.html">Senate</a>
+                            <a class="dropdown-item" href="house-starter-page.html">House</a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -46,8 +44,25 @@
                 <p>First convened in 1789, the composition and powers of the Senate are established in Article One of the U.S. Constitution. Each state is represented by two senators, regardless of population, who serve staggered six-year terms. The Senate has several exclusive powers not granted to the House, including consenting to treaties as a precondition to their ratification and consenting to or confirming appointments of Cabinet secretaries, federal judges, other federal executive officials, military officers, regulatory officials, ambassadors, and other federal uniformed officers, as well as trial of federal officials impeached by the House.</p>
             </div>
         </div>
+         <div class="row">
+            <div class="col-sm-8">
+                <span>Filter by Party:</span>
+
+                <label for="Republican">Republican</label><input type="checkbox" value="R" id="republicanCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter= "R" checked>
+
+                <label for="Democrat">Democrat</label><input type="checkbox" value="D" id="democratCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter="D" checked>
+
+                <label for="Independent">Independent</label><input type="checkbox" value="I" id="independentCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter= "I" checked>
+
+            </div>
+            <div class="col-sm-4">
+                <label for="states">Filter by States:</label>
+
+            </div>
+        </div>
         <!--Table container-->
-        <div class="row">
+        <div id="table-filters"></div>
+        <div class="row" id="table-container">
             <div class="col-sm-12">
                 <table class="table table-borderless" id="table-senate">
                 </table>
@@ -64,7 +79,14 @@
             </div>
         </div>
     </div>
-
+    
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="pro-congress-113-senate.js"></script>
 
 </body>

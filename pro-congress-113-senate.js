@@ -1,7 +1,7 @@
 var data = {
     "status": "OK",
     "copyright": " Copyright (c) 2019 Pro Publica Inc. All Rights Reserved.",
-    "results": {
+    "results": [{
 
         "congress": "113",
         "chamber": "Senate",
@@ -4840,13 +4840,14 @@ var data = {
                }
              ]
 
-    }
+    }]
 }
 
 var headers = ["Senator", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "]
 
 
 function createTHead(table, headerArr) {
+
 
     var row = document.createElement("tr");
 
@@ -4860,70 +4861,43 @@ function createTHead(table, headerArr) {
 }
 
 
-
-function generateTable(table, data) {
-
-
-    for (var i = 0; i < data.results.members.length; i++) {
-
-        if (data.results.members[i].first_name) {
-            var row = document.createElement("tr");
-            row.setAttribute("scope", "row")
-            var cell = document.createElement("td");
-            var a = document.createElement('a');
-            a.setAttribute("href", data.results.members[i].url );
-            cell.appendChild(a);
-           var fullName = data.results.members[i].first_name + " " + (data.results.members[i].middle_name || "") + " " + data.results.members[i].last_name;
-            a.innerHTML = fullName;
-           /* a.innerHTML = */
-            row.appendChild(cell);
-            tblBody.appendChild(row);
-
-           
-        }
+let members = data.results[0].members;
 
 
-        if (data.results.members[i].party) {
+function generateTable(members) {
 
-            var cell = document.createElement("td");
-            var cellText = document.createTextNode(data.results.members[i].party);
-            cell.appendChild(cellText);
-            row.appendChild(cell);
-            tblBody.appendChild(row);
-        }
+    var memberUrl;
+    var fullName;
+    var fullNameLinkTd;
+    var party;
+    var state;
+    var seniority;
+    var votePercentage;
+    var memberState;
 
+    for (var i = 0; i < members.length; i++) {
 
-        if (data.results.members[i].state) {
+        var newTr = document.createElement("tr");
+        tblBody.insertAdjacentElement("beforeend", newTr);
+        if (members[i].middle_name === null) {
+            members[i].middle_name = "";
+        };
 
-            var cell = document.createElement("td");
-            var cellText = document.createTextNode(data.results.members[i].state);
-            cell.appendChild(cellText);
-            row.appendChild(cell);
-            tblBody.appendChild(row);
-
-        }
-
-        if (data.results.members[i].seniority) {
-
-            var cell = document.createElement("td");
-            var cellText = document.createTextNode(data.results.members[i].seniority);
-            cell.appendChild(cellText);
-            row.appendChild(cell);
-            tblBody.appendChild(row);
-        }
-
-
-        if (data.results.members[i].votes_with_party_pct) {
-
-            var cell = document.createElement("td");
-            var cellText = document.createTextNode(data.results.members[i].votes_with_party_pct + " %");
-            cell.appendChild(cellText);
-            row.appendChild(cell);
-            tblBody.appendChild(row);
-        }
-
+        fullName = members[i].last_name + ", " +  members[i].first_name + " " + members[i].middle_name;
+        memberUrl = "<a class='iframe_colorbox' target='_blank' href=" + members[i].url + ">" + fullName + "</a>";
+        fullNameLinkTd = "<td>" + memberUrl + "</td>";
+        newTr.insertAdjacentHTML("beforeend", fullNameLinkTd);
+        party = "<td>" + members[i].party + "</td>";
+        newTr.insertAdjacentHTML("beforeend", party);
+        state =  "<td>" + members[i].state + "</td>";
+        newTr.insertAdjacentHTML("beforeend", state);
+        seniority =  "<td>" + members[i].seniority + "</td>";
+        newTr.insertAdjacentHTML("beforeend", seniority);
+        votePercentage = "<td>" + members[i].votes_with_party_pct + "</td>";
+        newTr.insertAdjacentHTML("beforeend", votePercentage);
+        
     }
-
+    
 }
 
 var tbl = document.getElementById("table-senate");
@@ -4936,4 +4910,41 @@ tbl.appendChild(tblBody);
 tbl.appendChild(thead);
 
 createTHead(tbl, headers);
-generateTable(tbl, data);
+generateTable(members);
+
+function getCheckedBoxes() {
+
+    var checkedBoxes = Array.from(document.querySelectorAll('input[name=mycheckboxes]:checked'));
+    var checkedValues = checkedBoxes.map(function (checkedBox) {
+        return checkedBox.getAttribute('value');
+    });
+
+    var table = document.getElementById('table-senate');
+    var tr = table.getElementsByTagName('tr');
+    var party;
+    var td;
+
+
+
+    for (var i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            party = td.textContent || td.innerText; {
+                if (checkedValues.indexOf(party) > -1) {
+                    tr[i].style.display = "";
+                    tr[i].removeAttribute('hidden');
+                } else {
+                    tr[i].style.display = "none";
+
+                }
+
+
+            }
+        }
+    }
+
+}
+
+
+
+
