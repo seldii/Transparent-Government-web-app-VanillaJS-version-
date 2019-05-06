@@ -20820,23 +20820,27 @@ function getCheckedBoxes() {
         return checkedBox.getAttribute('value');
     });
     console.log(selectedState);
-
-    if ((checkedValues.length === 0) && (selectedState === "All")) {
-        filteredMembers = members;
-    } else if (checkedValues.length != 0 && selectedState === "All") {
-        for(var i = 0 ; i < members.length ; i++){
-            if (checkedValues.indexOf(members[i].party) > -1) {
-                filteredMembers.push(members[i]);
+    for (var i = 0; i < members.length; i++) {
+       
+        if ((checkedValues.length === 0) && (selectedState === "All")) {
+            filteredMembers = members;
+        } else if ((checkedValues.length != 0) && (selectedState === "All")) {
+            
+                if (checkedValues.indexOf(members[i].party) > -1) {
+                    filteredMembers.push(members[i]);
+                
             }
+        } else if ((checkedValues.length === 0) && (selectedState != "All" )) {
+            
+                if (selectedState === members[i].state) {
+                    filteredMembers.push(members[i]);
+                
+            }
+        } else if(checkedValues.indexOf(members[i].party) > -1 && selectedState === members[i].state) {
+            filteredMembers.push(members[i]);
         }
-    } else if ((checkedValues.length === 0) && (selectedState != "All")) {
-            for(var i = 0 ; i < members.length ; i++) {
-                if (selectedState == members[i].state) {
-                    filteredMembers.push(members[i])
-                }
-            }
-        } 
+        
 
-
-        generateTable(filteredMembers);
     }
+    generateTable(filteredMembers);
+}
