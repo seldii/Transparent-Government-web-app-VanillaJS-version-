@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-
+    <title>House</title>
 </head>
 
 <body>
@@ -52,19 +52,19 @@
             <div class="col-sm-8">
                 <span>Filter by Party:</span>
                 <div class="form-check-inline">
-                    <label class="form-check-label" for="Republican"><input type="checkbox" class="form-check-input" value="R" id="republicanCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter="R">Republican</label>
+                    <label class="form-check-label" for="Republican"><input type="checkbox" class="form-check-input" value="R" id="republicanCheckbox" name="mycheckboxes" onchange="helperFunction()" data-filter="R">Republican</label>
                 </div>
 
                 <div class="form-check-inline">
-                    <label class="form-check-label" for="Democrat"><input type="checkbox" class="form-check-input" value="D" id="democratCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter="D">Democrat</label>
+                    <label class="form-check-label" for="Democrat"><input type="checkbox" class="form-check-input" value="D" id="democratCheckbox" name="mycheckboxes" onchange="helperFunction()" data-filter="D">Democrat</label>
                 </div>
 
                 <div class="form-check-inline">
-                    <label class="form-check-label" for="Independent"><input type="checkbox" class="form-check-input" value="I" id="independentCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter="I">Independent</label>
+                    <label class="form-check-label" for="Independent"><input type="checkbox" class="form-check-input" value="I" id="independentCheckbox" name="mycheckboxes" onchange="helperFunction()" data-filter="I">Independent</label>
                 </div>
             </div>
             <div class="col-sm-4">
-                <label for="selectedState">Filter by State:</label><select class="selectpicker show-menu-arrow show-tick" data-live-search="true" data-style="btn-info" id="selectState" onchange='getCheckedBoxes()'></select>
+                <label for="selectedState">Filter by State:</label><select class="selectpicker show-menu-arrow show-tick" data-live-search="true" data-style="btn-info" id="selectState" onchange="helperFunction()"></select>
 
             </div>
 
@@ -72,7 +72,7 @@
         <div class="row">
             <p id="table-container"></p>
             <div class="col-sm-12">
-                <table class="table table-borderless" id="table-house"></table>
+                <table class="table table-borderless" id="table"></table>
             </div>
         </div>
     </div>
@@ -89,7 +89,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-    <script src="pro-congress-113-house.js"></script>
+    <script src="main.js"></script>
 </body>
 
 </html>

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Senate</title>
 </head>
 
 <body>
@@ -45,26 +46,32 @@
             </div>
         </div>
          <div class="row">
-            <div class="col-sm-8">
+           <div class="col-sm-8">
                 <span>Filter by Party:</span>
+                <div class="form-check-inline">
+                    <label class="form-check-label" for="Republican"><input type="checkbox" class="form-check-input" value="R" id="republicanCheckbox" name="mycheckboxes" onchange="helperFunction2()" data-filter="R">Republican</label>
+                </div>
 
-                <label for="Republican">Republican</label><input type="checkbox" value="R" id="republicanCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter= "R" checked>
+                <div class="form-check-inline">
+                    <label class="form-check-label" for="Democrat"><input type="checkbox" class="form-check-input" value="D" id="democratCheckbox" name="mycheckboxes" onchange="helperFunction2()" data-filter="D">Democrat</label>
+                </div>
 
-                <label for="Democrat">Democrat</label><input type="checkbox" value="D" id="democratCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter="D" checked>
-
-                <label for="Independent">Independent</label><input type="checkbox" value="I" id="independentCheckbox" name="mycheckboxes" onchange="getCheckedBoxes()" data-filter= "I" checked>
-
+                <div class="form-check-inline">
+                    <label class="form-check-label" for="Independent"><input type="checkbox" class="form-check-input" value="I" id="independentCheckbox" name="mycheckboxes" onchange="helperFunction2()" data-filter="I">Independent</label>
+                </div>
             </div>
             <div class="col-sm-4">
-                <label for="states">Filter by States:</label>
+                <label for="selectedState">Filter by State:</label><select class="selectpicker show-menu-arrow show-tick" data-live-search="true" data-style="btn-info" id="selectState" onchange="helperFunction2()"></select>
 
             </div>
         </div>
+        
+        
         <!--Table container-->
         <div id="table-filters"></div>
         <div class="row" id="table-container">
             <div class="col-sm-12">
-                <table class="table table-borderless" id="table-senate">
+                <table class="table table-borderless" id="table">
                 </table>
             </div>
         </div>
@@ -87,7 +94,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="pro-congress-113-senate.js"></script>
+    <script src="main.js"></script>
 
 </body>
 

@@ -4843,8 +4843,15 @@ var data = {
     }]
 }
 
-var headers = ["Senator", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "]
+var headers = ["Senator", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "];
 
+var members = data.results[0].members;
+var tbl = document.getElementById("table-senate");
+var tblBody = document.createElement("tbody");
+var thead = document.createElement("thead");
+
+tbl.appendChild(tblBody);
+tbl.appendChild(thead);
 
 function createTHead(table, headerArr) {
 
@@ -4861,8 +4868,6 @@ function createTHead(table, headerArr) {
 }
 
 
-let members = data.results[0].members;
-
 
 function generateTable(members) {
 
@@ -4873,8 +4878,8 @@ function generateTable(members) {
     var state;
     var seniority;
     var votePercentage;
-    var memberState;
 
+    tblBody.innerHTML = ""; //To start with an empty table body
     for (var i = 0; i < members.length; i++) {
 
         var newTr = document.createElement("tr");
@@ -4883,68 +4888,99 @@ function generateTable(members) {
             members[i].middle_name = "";
         };
 
-        fullName = members[i].last_name + ", " +  members[i].first_name + " " + members[i].middle_name;
+        fullName = members[i].last_name + ", " + members[i].first_name + " " + members[i].middle_name;
         memberUrl = "<a class='iframe_colorbox' target='_blank' href=" + members[i].url + ">" + fullName + "</a>";
         fullNameLinkTd = "<td>" + memberUrl + "</td>";
         newTr.insertAdjacentHTML("beforeend", fullNameLinkTd);
         party = "<td>" + members[i].party + "</td>";
         newTr.insertAdjacentHTML("beforeend", party);
-        state =  "<td>" + members[i].state + "</td>";
+        state = "<td>" + members[i].state + "</td>";
         newTr.insertAdjacentHTML("beforeend", state);
-        seniority =  "<td>" + members[i].seniority + "</td>";
+        seniority = "<td>" + members[i].seniority + "</td>";
         newTr.insertAdjacentHTML("beforeend", seniority);
         votePercentage = "<td>" + members[i].votes_with_party_pct + "</td>";
         newTr.insertAdjacentHTML("beforeend", votePercentage);
-        
+
     }
-    
+
 }
 
-var tbl = document.getElementById("table-senate");
 
-
-var tblBody = document.createElement("tbody");
-var thead = document.createElement("thead");
-
-tbl.appendChild(tblBody);
-tbl.appendChild(thead);
 
 createTHead(tbl, headers);
 generateTable(members);
 
-function getCheckedBoxes() {
+
+//
+// Populate a dropdown menu from states
+//
+
+//Variables
+
+var statesArray = [];
+var selectedState = "";
+
+
+
+function populateDropdown() {
+
+
+    for (var i = 0; i < members.length; i++) {
+        if (!statesArray.includes(members[i].state))
+            statesArray.push(members[i].state);
+    }
+
+    statesArray.sort();
+
+
+    var firstOption = "<option id='dropdown-state' value='All'>-- All States --</option>";
+    selectState.insertAdjacentHTML("beforeend", firstOption);
+    for (var j = 0; j < statesArray.length; j++) {
+        var newStateOption = "<option value='" + statesArray[j] + "'>" + statesArray[j] + "</option>";
+        selectState.insertAdjacentHTML("beforeend", newStateOption);
+    }
+
+}
+
+
+populateDropdown();
+
+
+//Update the table with the filtered members
+
+function updateTable() {
+
+    var filteredMembers = [];
+    var memberState;
+    selectedState = document.getElementById("selectState").value;
 
     var checkedBoxes = Array.from(document.querySelectorAll('input[name=mycheckboxes]:checked'));
     var checkedValues = checkedBoxes.map(function (checkedBox) {
         return checkedBox.getAttribute('value');
     });
+    console.log(selectedState);
 
-    var table = document.getElementById('table-senate');
-    var tr = table.getElementsByTagName('tr');
-    var party;
-    var td;
+    for (var i = 0; i < members.length; i++) {
 
+        if ((checkedValues.length === 0) && (selectedState === "All")) {
+            filteredMembers = members;
+        } else if ((checkedValues.length != 0) && (selectedState === "All")) {
 
-
-    for (var i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[1];
-        if (td) {
-            party = td.textContent || td.innerText; {
-                if (checkedValues.indexOf(party) > -1) {
-                    tr[i].style.display = "";
-                    tr[i].removeAttribute('hidden');
-                } else {
-                    tr[i].style.display = "none";
-
-                }
-
+            if (checkedValues.indexOf(members[i].party) > -1) {
+                filteredMembers.push(members[i]);
 
             }
+        } else if ((checkedValues.length === 0) && (selectedState != "All")) {
+
+            if (selectedState === members[i].state) {
+                filteredMembers.push(members[i]);
+
+            }
+        } else if (checkedValues.indexOf(members[i].party) > -1 && selectedState === members[i].state) {
+            filteredMembers.push(members[i]);
         }
+
+
     }
-
+    generateTable(filteredMembers);
 }
-
-
-
-
