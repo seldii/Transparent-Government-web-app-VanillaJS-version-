@@ -1,4 +1,4 @@
-var data = {
+var senateData = {
     "status": "OK",
     "copyright": " Copyright (c) 2019 Pro Publica Inc. All Rights Reserved.",
     "results": [{
@@ -4983,4 +4983,23 @@ function updateTable() {
 
     }
     generateTable(filteredMembers);
+}
+
+function helperFunction() {
+    updateTable(houseData.results[0].members);
+}
+
+function helperFunction2() {
+    updateTable(senateData.results[0].members);
+}
+
+
+
+if (document.title.indexOf("House") != -1) {
+
+    createTHead(tbl, headerArrHouse);
+    generateTable(houseData.results[0].members);
+    populateDropdown(houseData.results[0].members);
+
+
 }

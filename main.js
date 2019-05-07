@@ -25568,9 +25568,6 @@ var houseData = {
 //
 
 
-
-
-
 var tbl = document.getElementById("table");
 var tblBody = document.createElement("tbody");
 var thead = document.createElement("thead");
