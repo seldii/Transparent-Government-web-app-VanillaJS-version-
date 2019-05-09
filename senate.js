@@ -4870,14 +4870,26 @@
          "LeastEngagedMembers": [],
          "MostEngagedMembers": [],
      },
-     "Independent": {
+     "Independents": {
          "NoOfReps": 0,
          "AveVotedWParty": 0,
          "LeastLoyalMembers": [],
          "MostLoyalMembers": [],
          "LeastEngagedMembers": [],
          "MostEngagedMembers": [],
+     },
+
+     "Total": {
+         "NoOfReps": 0,
+         "AveVotedWParty": 0,
+         "LeastEngagedGuys": [],
+         "MostEngagedGuys": [],
+         "LeastLoyalGuys": [],
+         "MostLoyalGuys": [],
+
      }
+
+
  }
 
 
@@ -4920,17 +4932,7 @@
 
 
 
- //Democrats
 
- /*var votesWpartyD = democratsArr.map(x => x.votes_with_party_pct);
-
- var averageVoteWParty = arrSum(votesWpartyD) / democratsArr.length;*/
-
- statistic.Democrats.AveVotedWParty = averageVoteWithParty(democratsArr);
-
- statistic.Republicans.AveVotedWParty = averageVoteWithParty(republicanArr);
-
- statistic.Independent.AveVotedWParty = averageVoteWithParty(independentArr);
 
 
 
@@ -5038,7 +5040,7 @@
 
      var firstTenPer = missedVotesPerc.slice(0, firstTenPercentNum);
 
-     console.log(firstTenPer);
+
 
      for (var j = 0; j < partyArr.length; j++) {
 
@@ -5055,7 +5057,11 @@
 
  }
 
- console.log(mostEngagedTenPercent(democratsArr));
+
+
+
+
+
 
 
 
@@ -5067,6 +5073,8 @@
  //Democrats
 
  statistic.Democrats.NoOfReps = JSON.stringify(democratsArr.length);
+
+ statistic.Democrats.AveVotedWParty = averageVoteWithParty(democratsArr);
 
  statistic.Democrats.LeastLoyalMembers = JSON.stringify(leastLoyalTenPercent(democratsArr));
 
@@ -5080,6 +5088,8 @@
 
  statistic.Republicans.NoOfReps = JSON.stringify(republicanArr.length);
 
+ statistic.Republicans.AveVotedWParty = averageVoteWithParty(republicanArr);
+
  statistic.Republicans.LeastLoyalMembers = JSON.stringify(leastLoyalTenPercent(democratsArr));
 
  statistic.Republicans.MostLoyalMembers = JSON.stringify(mostLoyalTenPercent(republicanArr));
@@ -5090,36 +5100,53 @@
 
  //Independents
 
- statistic.Independent.NoOfReps = JSON.stringify(independentArr.length);
+ statistic.Independents.NoOfReps = JSON.stringify(independentArr.length);
 
- statistic.Independent.LeastLoyalMembers = JSON.stringify(leastLoyalTenPercent(independentArr));
+ statistic.Independents.AveVotedWParty = averageVoteWithParty(independentArr);
 
- statistic.Independent.MostLoyalMembers = JSON.stringify(mostLoyalTenPercent(independentArr));
+ statistic.Independents.LeastLoyalMembers = JSON.stringify(leastLoyalTenPercent(independentArr));
 
- statistic.Independent.LeastEngagedMembers = JSON.stringify(leastEngagedTenPercent(independentArr));
+ statistic.Independents.MostLoyalMembers = JSON.stringify(mostLoyalTenPercent(independentArr));
 
- statistic.Independent.MostEngagedMembers = JSON.stringify(mostEngagedTenPercent(independentArr));
+ statistic.Independents.LeastEngagedMembers = JSON.stringify(leastEngagedTenPercent(independentArr));
+
+ statistic.Independents.MostEngagedMembers = JSON.stringify(mostEngagedTenPercent(independentArr));
+
+
+ //Totals
+ statistic.Total.NoOfReps = JSON.stringify(senateData.results[0].members.length);
+
+ statistic.Total.AveVotedWParty = averageVoteWithParty(senateData.results[0].members);
+
+ //
+
+ statistic.Total.LeastEngagedGuys = JSON.stringify(leastEngagedTenPercent(members));
+ statistic.Total.MostEngagedGuys = JSON.stringify(mostEngagedTenPercent(members));
+ statistic.Total.LeastLoyalGuys = JSON.stringify(leastLoyalTenPercent(members));
+ statistic.Total.MostLoyalGuys = JSON.stringify(mostLoyalTenPercent(members));
 
 
  console.log(statistic);
-
+ console.log(mostEngagedTenPercent(members));
 
  //Create the table
 
 
- var tbl = document.createElement("table");
+ var tbl = document.querySelector("#table");
  var tblBody = document.createElement("tbody");
  var thead = document.createElement("thead");
  tbl.appendChild(tblBody);
  tbl.appendChild(thead);
 
- var senateAtAGlance = ["Party", "Number of Reps", "% Voted with Prt"];
+ var senateAtAGlance = ["Party", "Number of Reps", "% Voted with Party"];
+ var engagementLevel = ["Name", "Number of Missed Votes", "% Missed"];
 
 
  function createTHead(table, headerArr) {
 
 
      var row = document.createElement("tr");
+
 
      for (var i = 0; i < headerArr.length; i++) {
          var th = document.createElement("th");
@@ -5130,30 +5157,96 @@
      }
  }
 
- createTHead(tbl, senateAtAGlance);
+
+ //
+ //Create the tables
+ //
 
 
-
+ //first table
 
  function generateTable() {
+     var PartyName;
+     var NoOfReps;
+     var AvgPerc;
+     var i;
 
-     var democratsRowNo;
-     var democratsRowPerc;
-     var republicanRowNo;
-     var republicanRowPerc;
+     for (i in statistic) {
+         if (statistic.hasOwnProperty(i)) {
+             var newTr = document.createElement("tr");
+             tblBody.insertAdjacentElement("beforeend", newTr);
 
-     var newTr = document.createElement("tr");
-     tblBody.appendChild("newTr");
+             PartyName = "<td>" + i + "</td>";
+             newTr.insertAdjacentHTML("beforeend", PartyName);
 
-     democratsRowNo = "<td>" + statistic.Democrats.NoOfReps + "</td>";
-     newTr.insertAdjacentHTML("beforeend", democaratsRowNo);
-     democratsRowPerc ="<td>" + statistic.Democrats.AveVotedWParty + "</td>";
-     newTr.insertAdjacentHTML("beforeend", democaratsRowPerc);
-     republicanRowNo = "<td>" +statistic.Republicans.NoOfReps + "</td>";
-     newTr.insertAdjacentHTML("beforeend" , republicanRowNo);
-     republicanRowPerc = "<td>" + statistic.Republicans.AveVotedWParty +"</td>";
+             NoOfReps = "<td>" + statistic[i].NoOfReps + "</td>";
+             newTr.insertAdjacentHTML("beforeend", NoOfReps);
+
+             AvgPerc = "<td>" + statistic[i].AveVotedWParty + "</td>";
+             newTr.insertAdjacentHTML("beforeend", AvgPerc);
+         }
 
      }
 
+     createTHead(tbl, senateAtAGlance);
+
+ }
+
 
  generateTable();
+
+ //second table
+ var tblSecond = document.querySelector("#least_engaged");
+ var tblBodySecond = document.createElement("tbody");
+ var tblHeadSecond = document.createElement("thead");
+ tblSecond.appendChild(tblBodySecond);
+ tblSecond.appendChild(tblHeadSecond);
+ var leastEngagedMembers = JSON.parse(statistic.Total.LeastEngagedGuys);
+
+ var tblThird = document.querySelector("#most_engaged");
+ var tblBodyThird = document.createElement("tbody");
+
+ tblThird.appendChild(tblBodyThird);
+ tblThird.appendChild(tblHeadSecond);
+ var mostEngagedMembers = JSON.parse(statistic.Total.MostEngagedGuys);
+
+ function generateTableSecond(membersArr, table) {
+
+     var senatorName;
+     var senatorUrl
+     var senatorNameWLink;
+     var noOfMissedVotes;
+     var percentMissed;
+
+
+
+     membersArr.forEach(member => {
+         var newTr = document.createElement("tr");
+         table.insertAdjacentElement("beforeend", newTr);
+         if (member.middle_name === null) {
+             member.middle_name = "";
+         };
+         senatorName = member.last_name + ", " + member.middle_name + " " + member.first_name;
+
+         senatorUrl = "<a class='iframe_colorbox' target='_blank' href=" + member.url + ">" + senatorName + "</a>";
+         senatorNameWLink = "<td>" + senatorUrl + "</td>";
+         newTr.insertAdjacentHTML("beforeend", senatorNameWLink);
+         noOfMissedVotes = "<td>" + member.missed_votes + "</td>";
+         newTr.insertAdjacentHTML("beforeend", noOfMissedVotes);
+         percentMissed = "<td>" + member.missed_votes_pct + "</td>";
+         newTr.insertAdjacentHTML("beforeend", percentMissed);
+
+     });
+
+     
+
+ }
+createTHead(tblSecond, engagementLevel);
+
+ generateTableSecond(leastEngagedMembers, tblSecond);
+ generateTableSecond(mostEngagedMembers, tblThird);
+
+
+
+
+
