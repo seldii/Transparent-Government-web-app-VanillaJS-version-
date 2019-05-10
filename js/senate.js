@@ -4922,9 +4922,9 @@
  function averageVoteWithParty(partyArr) {
      var votesWpartyArr = partyArr.map(x => x.votes_with_party_pct);
      var arrSum = arr => arr.reduce((a, b) => a + b, 0);
-     
-     if(partyArr.length === 0) return "-";
-     
+
+     if (partyArr.length === 0) return "-";
+
      return (arrSum(votesWpartyArr) / partyArr.length).toFixed(2);
  }
 
@@ -5106,19 +5106,16 @@
 
 
  var tbl = document.querySelector("#table");
- var tblBody = document.createElement("tbody");
- var thead = document.createElement("thead");
- tbl.appendChild(tblBody);
- tbl.appendChild(thead);
 
  var senateAtAGlance = ["Party", "Number of Reps", "% Voted with Party"];
  var engagementLevel = ["Name", "Number of Missed Votes", "% Missed"];
 
 
- function createTHead(thead, headerArr) {
+ function createTHead(table, headerArr) {
 
-
-     var row = document.createElement("tr");
+     var tHead = document.createElement("thead");
+     table.appendChild(tHead);
+     var row = tHead.insertRow(-1)
 
 
      for (var i = 0; i < headerArr.length; i++) {
@@ -5126,9 +5123,11 @@
          var text = document.createTextNode(headerArr[i]);
          row.appendChild(th);
          th.appendChild(text);
-         thead.appendChild(row);
+
      }
  }
+
+
 
 
  //
@@ -5143,12 +5142,13 @@
      var NoOfReps;
      var AvgPerc;
      var i;
+     var tblBody = document.createElement("tbody");
+     tbl.appendChild(tblBody);
 
      for (i in statistic) {
          if (statistic.hasOwnProperty(i)) {
-             var newTr = document.createElement("tr");
-             tblBody.insertAdjacentElement("beforeend", newTr);
-
+             var newTr = tblBody.insertRow(-1);
+             
              PartyName = "<td>" + i + "</td>";
              newTr.insertAdjacentHTML("beforeend", PartyName);
 
@@ -5161,67 +5161,61 @@
 
      }
 
+    
 
+ }
+ createTHead(tbl, senateAtAGlance)
+ generateTable();
+
+
+
+ //second table
+ var tblSecond = document.getElementById("leastEngaged");
+
+ var leastEngagedMembers = JSON.parse(statistic.Total.LeastEngagedGuys);
+
+ var tblThird = document.getElementById("mostEngaged");
+
+ var mostEngagedMembers = JSON.parse(statistic.Total.MostEngagedGuys);
+
+ function generateTableEngagement(membersArr, table) {
+
+     var senatorName;
+     var senatorUrl
+     var senatorNameWLink;
+     var noOfMissedVotes;
+     var percentMissed;
+     var tbody = document.createElement("tbody");
+     table.appendChild(tbody);
+
+     membersArr.forEach(member => {
+         var newTr = tbody.insertRow(-1);
+
+         if (member.middle_name === null) {
+             member.middle_name = "";
+         };
+         senatorName = member.last_name + ", " + member.middle_name + " " + member.first_name;
+
+         senatorUrl = "<a class='iframe_colorbox' target='_blank' href=" + member.url + ">" + senatorName + "</a>";
+         senatorNameWLink = "<td>" + senatorUrl + "</td>";
+         newTr.insertAdjacentHTML("beforeend", senatorNameWLink);
+         noOfMissedVotes = "<td>" + member.missed_votes + "</td>";
+         newTr.insertAdjacentHTML("beforeend", noOfMissedVotes);
+         percentMissed = "<td>" + member.missed_votes_pct + "</td>";
+         newTr.insertAdjacentHTML("beforeend", percentMissed);
+
+     });
 
  }
 
- createTHead(thead, senateAtAGlance);
- generateTable();
 
  if (document.title.indexOf("Senate Attendance") != -1) {
 
-     //second table
-     var tblSecond = document.getElementById("leastEngaged");
-     var tblBodySecond = document.createElement("tbody");
-     var tblHeadSecond = document.createElement("thead");
-     tblSecond.appendChild(tblBodySecond);
-     tblSecond.appendChild(tblHeadSecond);
-     var leastEngagedMembers = JSON.parse(statistic.Total.LeastEngagedGuys);
-
-     var tblThird = document.getElementById("mostEngaged");
-     var tblBodyThird = document.createElement("tbody");
-
-     tblThird.appendChild(tblBodyThird);
-     tblThird.appendChild(tblHeadSecond);
-     var mostEngagedMembers = JSON.parse(statistic.Total.MostEngagedGuys);
-
-     function generateTableEngagement(membersArr, table) {
-
-         var senatorName;
-         var senatorUrl
-         var senatorNameWLink;
-         var noOfMissedVotes;
-         var percentMissed;
-
-
-
-         membersArr.forEach(member => {
-             var newTr = document.createElement("tr");
-             table.insertAdjacentElement("beforeend", newTr);
-             if (member.middle_name === null) {
-                 member.middle_name = "";
-             };
-             senatorName = member.last_name + ", " + member.middle_name + " " + member.first_name;
-
-             senatorUrl = "<a class='iframe_colorbox' target='_blank' href=" + member.url + ">" + senatorName + "</a>";
-             senatorNameWLink = "<td>" + senatorUrl + "</td>";
-             newTr.insertAdjacentHTML("beforeend", senatorNameWLink);
-             noOfMissedVotes = "<td>" + member.missed_votes + "</td>";
-             newTr.insertAdjacentHTML("beforeend", noOfMissedVotes);
-             percentMissed = "<td>" + member.missed_votes_pct + "</td>";
-             newTr.insertAdjacentHTML("beforeend", percentMissed);
-
-         });
-
-
-     }
-
-     createTHead(tblSecond, engagementLevel);
-     createTHead(tblThird, engagementLevel);
+     createTHead(tblSecond, engagementLevel)
+     createTHead(tblThird, engagementLevel)
 
      generateTableEngagement(leastEngagedMembers, tblSecond);
      generateTableEngagement(mostEngagedMembers, tblThird);
-
 
  }
 
@@ -5231,63 +5225,165 @@
  //
  //Loyalty Page Tables
  //
+
+
+ var tblSecondLoyalty = document.getElementById("leastLoyal");
+
+ var leastLoyalMembers = JSON.parse(statistic.Total.LeastLoyalGuys);
+
+ var tblThirdLoyalty = document.getElementById("mostLoyal");
+
+ var mostLoyalMembers = JSON.parse(statistic.Total.MostLoyalGuys);
+
+ var loyaltyLevel = ["Name", "Number Party Votes", "% Party Votes"];
+
+
+ function generateTableLoyalty(membersArr, table) {
+
+
+     var senatorName;
+     var senatorUrl
+     var senatorNameWLink;
+     var noOfPartyVotes;
+     var percentParty;
+     var tbody = document.createElement("tbody");
+     table.appendChild(tbody);
+
+     membersArr.forEach(member => {
+         var newTr = tbody.insertRow(-1);
+         if (member.middle_name === null) {
+             member.middle_name = "";
+         };
+         senatorName = member.last_name + ", " + member.middle_name + " " + member.first_name;
+
+         senatorUrl = "<a class='iframe_colorbox' target='_blank' href=" + member.url + ">" + senatorName + "</a>";
+         senatorNameWLink = "<td>" + senatorUrl + "</td>";
+         newTr.insertAdjacentHTML("beforeend", senatorNameWLink);
+         noOfPartyVotes = "<td>" + member.total_votes + "</td>";
+         newTr.insertAdjacentHTML("beforeend", noOfPartyVotes);
+         percentParty = "<td>" + member.votes_with_party_pct + "</td>";
+         newTr.insertAdjacentHTML("beforeend", percentParty);
+
+     });
+
+
+ }
+
+
+
+
  if (document.title.indexOf("Senate Party Loyalty") != -1) {
-
-     var tblSecondLoyalty = document.getElementById("leastLoyal");
-
-     var tblBodySecondLoyalty = document.createElement("tbody");
-     var tblHeadSecondLoyalty = document.createElement("thead");
-     tblSecondLoyalty.appendChild(tblBodySecondLoyalty);
-     tblSecondLoyalty.appendChild(tblHeadSecondLoyalty);
-
-     var leastLoyalMembers = JSON.parse(statistic.Total.LeastLoyalGuys);
-
-
-
-     var tblThirdLoyalty = document.getElementById("mostLoyal");
-     var tblBodyThirdLoyalty = document.createElement("tbody");
-
-     tblThirdLoyalty.appendChild(tblBodyThirdLoyalty);
-     tblThirdLoyalty.appendChild(tblHeadSecondLoyalty);
-     var mostLoyalMembers = JSON.parse(statistic.Total.MostLoyalGuys);
-
-     var loyaltyLevel = ["Name", "Number Party Votes", "% Party Votes"];
-
-
-     function generateTableLoyalty(membersArr, table) {
-
-
-         var senatorName;
-         var senatorUrl
-         var senatorNameWLink;
-         var noOfPartyVotes;
-         var percentParty;
-
-
-         membersArr.forEach(member => {
-             var newTr = document.createElement("tr");
-             table.insertAdjacentElement("beforeend", newTr);
-             if (member.middle_name === null) {
-                 member.middle_name = "";
-             };
-             senatorName = member.last_name + ", " + member.middle_name + " " + member.first_name;
-
-             senatorUrl = "<a class='iframe_colorbox' target='_blank' href=" + member.url + ">" + senatorName + "</a>";
-             senatorNameWLink = "<td>" + senatorUrl + "</td>";
-             newTr.insertAdjacentHTML("beforeend", senatorNameWLink);
-             noOfPartyVotes = "<td>" + member.total_votes + "</td>";
-             newTr.insertAdjacentHTML("beforeend", noOfPartyVotes);
-             percentParty = "<td>" + member.votes_with_party_pct + "</td>";
-             newTr.insertAdjacentHTML("beforeend", percentParty);
-
-         });
-
-
-     }
+     
      createTHead(tblSecondLoyalty, loyaltyLevel)
      generateTableLoyalty(leastLoyalMembers, tblSecondLoyalty);
-     
-      createTHead(tblThirdLoyalty, loyaltyLevel)
+
+     createTHead(tblThirdLoyalty, loyaltyLevel)
      generateTableLoyalty(mostLoyalMembers, tblThirdLoyalty);
 
  }
+
+
+
+/* 
+   Willmaster Table Sort
+   Version 1.1
+   August 17, 2016
+   Updated GetDateSortingKey() to correctly sort two-digit months and days numbers with leading 0.
+   Version 1.0, July 3, 2011
+
+   Will Bontrager
+   https://www.willmaster.com/
+   Copyright 2011,2016 Will Bontrager Software, LLC
+
+   This software is provided "AS IS," without 
+   any warranty of any kind, without even any 
+   implied warranty such as merchantability 
+   or fitness for a particular purpose.
+   Will Bontrager Software, LLC grants 
+   you a royalty free license to use or 
+   modify this software provided this 
+   notice appears on all copies. 
+*/
+//
+// One placed to customize - The id value of the table tag.
+
+var TableIDvalue = "leastLoyal";
+
+//
+//////////////////////////////////////
+var TableLastSortedColumn = -1;
+function SortTable() {
+var sortColumn = parseInt(arguments[0]);
+var type = arguments.length > 1 ? arguments[1] : 'T';
+var dateformat = arguments.length > 2 ? arguments[2] : '';
+var table = document.getElementById(TableIDvalue);
+var tbody = table.getElementsByTagName("tbody")[0];
+var rows = tbody.getElementsByTagName("tr");
+var arrayOfRows = new Array();
+type = type.toUpperCase();
+dateformat = dateformat.toLowerCase();
+for(var i=0, len=rows.length; i<len; i++) {
+	arrayOfRows[i] = new Object;
+	arrayOfRows[i].oldIndex = i;
+	var celltext = rows[i].getElementsByTagName("td")[sortColumn].innerHTML.replace(/<[^>]*>/g,"");
+	if( type=='D' ) { arrayOfRows[i].value = GetDateSortingKey(dateformat,celltext); }
+	else {
+		var re = type=="N" ? /[^\.\-\+\d]/g : /[^a-zA-Z0-9]/g;
+		arrayOfRows[i].value = celltext.replace(re,"").substr(0,25).toLowerCase();
+		}
+	}
+if (sortColumn == TableLastSortedColumn) { arrayOfRows.reverse(); }
+else {
+	TableLastSortedColumn = sortColumn;
+	switch(type) {
+		case "N" : arrayOfRows.sort(CompareRowOfNumbers); break;
+		case "D" : arrayOfRows.sort(CompareRowOfNumbers); break;
+		default  : arrayOfRows.sort(CompareRowOfText);
+		}
+	}
+var newTableBody = document.createElement("tbody");
+for(var i=0, len=arrayOfRows.length; i<len; i++) {
+	newTableBody.appendChild(rows[arrayOfRows[i].oldIndex].cloneNode(true));
+	}
+table.replaceChild(newTableBody,tbody);
+} // function SortTable()
+
+function CompareRowOfText(a,b) {
+var aval = a.value;
+var bval = b.value;
+return( aval == bval ? 0 : (aval > bval ? 1 : -1) );
+} // function CompareRowOfText()
+
+function CompareRowOfNumbers(a,b) {
+var aval = /\d/.test(a.value) ? parseFloat(a.value) : 0;
+var bval = /\d/.test(b.value) ? parseFloat(b.value) : 0;
+return( aval == bval ? 0 : (aval > bval ? 1 : -1) );
+} // function CompareRowOfNumbers()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
