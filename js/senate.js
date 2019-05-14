@@ -8,6 +8,11 @@ const opts = {
     }
 }
 
+
+var loader = `<div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>` ;
+document.getElementsByTagName("table").innerHTML= loader;
 fetch(url, opts)
     .then(res => res.json())
     .then(function (data) {
@@ -19,6 +24,7 @@ fetch(url, opts)
 
     })
     .catch(console.error);
+
 
 
 
@@ -183,8 +189,7 @@ function loyaltyAndEngagement(data) {
 
     reverseMissedVotesPerc = missedVotesPerc.slice().reverse();
 
-    console.log(missedVotesPerc);
-    console.log(reverseMissedVotesPerc);
+    
 
     var firstTenPerLeastEngaged = reverseMissedVotesPerc.slice(0, firstTenPercentNum);
 
@@ -218,11 +223,6 @@ function loyaltyAndEngagement(data) {
 
 }
 
-
-
-
-
-console.log(statistic)
 
 
 
@@ -290,11 +290,6 @@ function generateTable() {
     createTHead(tbl, senateAtAGlance)
 
 }
-
-
-
-
-
 
 
 
