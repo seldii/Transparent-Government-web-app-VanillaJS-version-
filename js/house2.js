@@ -1,4 +1,5 @@
-const url = 'https://api.propublica.org/congress/v1/113/senate/members.json';
+
+const url2 = 'https://api.propublica.org/congress/v1/113/house/members.json';
 
 const opts = {
     method: "GET",
@@ -8,28 +9,33 @@ const opts = {
     }
 }
 
+if (document.title.indexOf("House") != -1) {
+    
+    fetch(url2, opts)
+        .then(res => res.json())
+        .then(function (data) {
+            data = data.results[0].members;
+            getPartyArr(data)
+            generateTable()
+            loyaltyAndEngagement(data)
+            myFunction()
+            
 
-var loader = `<div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>` ;
-document.getElementsByTagName("table").innerHTML= loader;
-fetch(url, opts)
-    .then(res => res.json())
-    .then(function (data) {
-        data = data.results[0].members;
-        getPartyArr(data)
-        generateTable()
-        loyaltyAndEngagement(data)
-        myFunction()
+        })
+        .catch(console.error);
 
-    })
-    .catch(console.error);
-
-
+}
 
 
 
 
+
+function hideLoaderH() {
+    let loaders = document.getElementsByClassName("spinner-grow");
+    Array.from(loaders).forEach(loader =>
+        loader.style.display = "none"
+    )
+}
 
 var statistic = {
     "Democrats": {
@@ -189,7 +195,7 @@ function loyaltyAndEngagement(data) {
 
     reverseMissedVotesPerc = missedVotesPerc.slice().reverse();
 
-    
+
 
     var firstTenPerLeastEngaged = reverseMissedVotesPerc.slice(0, firstTenPercentNum);
 
@@ -392,7 +398,7 @@ function generateTableLoyalty(membersArr, table) {
 
 function myFunction() {
 
-    if (document.title.includes("Senate Party Loyalty")) {
+    if (document.title.includes("Party Loyalty")) {
         var leastLoyalMembers = JSON.parse(statistic.Total.LeastLoyalGuys);
         var mostLoyalMembers = JSON.parse(statistic.Total.MostLoyalGuys);
 
@@ -403,7 +409,7 @@ function myFunction() {
 
 
 
-    if (document.title.includes("Senate Attendance")) {
+    if (document.title.includes("Attendance")) {
 
         var leastEngagedMembers = JSON.parse(statistic.Total.LeastEngagedGuys);
         var mostEngagedMembers = JSON.parse(statistic.Total.MostEngagedGuys);

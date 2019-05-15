@@ -11,11 +11,12 @@ const opts = {
 
 if (document.title.indexOf("Senate") != -1) {
 
-
+    showLoader();
     fetch(url, opts)
         .then(res => res.json())
         .then(function (senateData) {
-            senateData = senateData.results[0].members
+            senateData = senateData.results[0].members;
+            hideLoader();
             createTHead(tbl, headerArrSenate);
             generateTable(senateData);
             populateDropdown(senateData);
@@ -39,13 +40,16 @@ if (document.title.indexOf("Senate") != -1) {
 
 if (document.title.indexOf("House") != -1) {
 
+    showLoader();
     fetch(url2, opts)
         .then(res => res.json())
         .then(function (houseData) {
-            houseData = houseData.results[0].members
+            houseData = houseData.results[0].members;
+            hideLoader();
             createTHead(tbl, headerArrHouse);
             generateTable(houseData);
             populateDropdown(houseData);
+
             document.getElementById("republicanCheckbox").addEventListener("click", () => {
                 updateTable(houseData)
             });
@@ -64,9 +68,29 @@ if (document.title.indexOf("House") != -1) {
 
 
 }
+
+
+
+function showLoader() {
+    let spinner = `<div class="spinner-grow" role="status" id="spinner">
+                    <span class="sr-only" >Loading...</span>
+                </div>`;
+    let loader = document.getElementById("loader");
+    loader.insertAdjacentHTML("beforeend", spinner);
+    
+}
+
+function hideLoader () {
+    let spinner = document.getElementById("loader");
+    spinner.innerHTML = "";
+}
+
+
+
 //
 //Variables
 //
+
 
 
 var tbl = document.getElementById("table");

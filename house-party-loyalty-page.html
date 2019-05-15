@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <title>House Party Loyalty</title>
@@ -58,26 +59,27 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-7">
                 <h2>Party Loyalty</h2>
                 <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans respectively, tend to be the most faithful in voting for their party's nominee for office and legislation that backs their party's agenda. </p>
 
             </div>
-            <div class="col-sm-4">
-                <h3>House at a glance</h3>
-                <table class="table table-borderless" id="table"></table>
+            <div class="col-sm-5">
+                <h3 class="float-right">House at a glance</h3>
+                <table class="table table-borderless" id="table" name="spinner"></table>
+               
             </div>
 
         </div>
 
         <div class="row">
             <div class="col-sm-6">
-                <h3>Least Loyal (Bottom 10% of Party)</h3>
-                <table class="table" id="leastLoyal"></table>
+                <h3>Least Loyal <small>(Bottom 10% of Party)</small></h3>
+                <table class="table" id="leastLoyal" name="spinner"></table>
             </div>
             <div class="col-sm-6">
-                <h3>Most Loyal (Top 10% of Party)</h3>
-                <table class="table" id="mostLoyal"></table>
+                <h3>Most Loyal <small>(Top 10% of Party)</small></h3>
+                <table class="table" id="mostLoyal" name="spinner"></table>
             </div>
         </div>
 
@@ -97,7 +99,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-    <script src="js/house.js"></script>
+    <script src="js/loyalty-engagement.js"></script>
 </body>
 
 </html>
