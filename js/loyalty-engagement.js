@@ -455,6 +455,7 @@ function myFunction() {
 
 
 /*
+
 var TableIDvalue = "leastLoyal";
 
 //
@@ -516,3 +517,4 @@ function CompareRowOfNumbers(a, b) {
     return (aval == bval ? 0 : (aval > bval ? 1 : -1));
 }
 */
+

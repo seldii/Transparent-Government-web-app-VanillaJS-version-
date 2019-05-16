@@ -6,44 +6,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Senate</title>
 </head>
 
 <body>
 
     <div id="app">
-        <table class="table">
-           <thead>
-              <th v-for="head in headers">{{head}}</th>
-           </thead>
-            <tbody>
-                <tr v-for="senator in senators">
-                    <td>{{senator.last_name}},  {{senator.middle_name}}
-                        {{senator.first_name}}
-                    </td>
-                    <td>{{senator.party}}</td>
-                    <td>{{senator.state}}</td>
-                    <td>{{senator.seniority}}</td>
-                    <td>{{senator.votes_with_party_pct}}%</td>
-                </tr>
+        <div v-if="isLoading">
+            <div class="spinner-grow" role="status" id="spinner">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div v-else>
+            <span>Filter by Party:</span>
+            <div class="form-check-inline">
+            <label :key="ch.text" v-for="ch in checkboxOptions">{{ ch.text }} 
+                <input type="checkbox" class="form-check-input" v-model="checkedParty" :value="ch.value">
+            </label>
+            </div>
+            <label>
+                <span>Filter by State:</span>
+                <select v-model="selectedState">
+                    <option value="All" selected>--All--</option>
+                    <option v-for="state in states" type="dropdown" v-bind:value="state">{{state}}</option>
+                </select>
+            </label>
+            <table class="table">
+                <thead>
+                    <th v-for="column in columns">{{column}}</th>
+                </thead>
+                <tbody>
+                    <tr v-for="senator in filteredMembers">
+                        <td><a class='iframe_colorbox' target='_blank' :href="senator.url">{{senator.last_name}}, {{senator.middle_name}}
+                                {{senator.first_name}}</a>
+                        </td>
+                        <td>{{senator.party}}</td>
+                        <td>{{senator.state}}</td>
+                        <td>{{senator.seniority}}</td>
+                        <td>{{senator.votes_with_party_pct}}%</td>
+                    </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+
+        </div>
 
 
 
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-        <script src="js/vue-main.js"></script>
 
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script src="js/vue-main.js"></script>
 
 </body>
 
