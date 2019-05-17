@@ -37,6 +37,10 @@ var app = new Vue({
         selectedState: "All",
         selectAll: true,
         states: [],
+        sortKey: "last_name",
+        currentSortDir: 'asc',
+        searchName: "",
+        reverse: false,
 
 
     },
@@ -50,6 +54,7 @@ var app = new Vue({
                     this.senators = data.results[0].members
                     this.isLoading = false
                     this.getStates()
+                
 
                 })
                 .catch(function (err) {
@@ -59,40 +64,58 @@ var app = new Vue({
 
         getStates: function () {
             let statesArr = [];
-           
-            this.senators.forEach(function(senator) {
+
+            this.senators.forEach(function (senator) {
                 let stateCode = senator.state;
-                if(statesArr.includes(stateCode) === false) {
+                if (statesArr.includes(stateCode) === false) {
                     statesArr.push(stateCode);
                 }
-                
-            })
-            
-            statesArr.sort();
-            
-            this.states = this.states.concat(statesArr)
-           
-            
 
-        }
+            })
+
+            statesArr.sort();
+
+            this.states = statesArr
+
+        },
+
+        sort: function (s) {
+            //if s == current sort, reverse
+            if (s === this.sortKey) {
+                this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+            }
+            this.sortKey = s;
+        },
+
+
 
     },
 
     computed: {
 
-        filteredMembers() {
+        filteredMembers: function () {
             return this.senators.filter(senator => {
                 let partyFilterValue = this.checkedParty.length == 0 || this.checkedParty.includes(senator.party);
                 let stateFilterValue = this.selectedState == 'All' || this.selectedState == senator.state;
+                let searchedName = this.searchName.length === 0 || (senator.last_name.toLowerCase().indexOf(this.searchName.toLowerCase()) > -1)
+                return partyFilterValue && stateFilterValue && searchedName;
+            }).sort((a, b) => {
+                let modifier = 1;
+                if (this.currentSortDir === 'desc') modifier = -1;
+                if (a[this.sortKey] < b[this.sortKey]) return -1 * modifier;
+                if (a[this.sortKey] > b[this.sortKey]) return 1 * modifier;
+                return 0;
+            });
+        },
 
-                return partyFilterValue && stateFilterValue;
-            })
-        }
+
     },
 
     created: function () {
         this.fetchData();
-        
+
     },
-    
+
+
+
 });
