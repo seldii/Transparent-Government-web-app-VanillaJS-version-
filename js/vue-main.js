@@ -13,7 +13,7 @@ var app = new Vue({
     el: '#app',
     data: {
         senators: [],
-        columns: ["Senator", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "],
+        congressmen: [],
         isLoading: true,
         checkboxOptions: [
             {
@@ -41,6 +41,8 @@ var app = new Vue({
         currentSortDir: 'asc',
         searchName: "",
         reverse: false,
+        pageSize: 10,
+        currentPage: 1,
 
 
     },
@@ -54,7 +56,24 @@ var app = new Vue({
                     this.senators = data.results[0].members
                     this.isLoading = false
                     this.getStates()
-                
+
+
+                })
+                .catch(function (err) {
+                    console.log(err)
+                })
+        },
+
+        fetchData2: function () {
+            fetch(url2, opts)
+                .then(res => {
+                    return res.json()
+                })
+                .then(data => {
+                    this.congressmen = data.results[0].members
+                    this.isLoading = false
+                    this.getStates2()
+
 
                 })
                 .catch(function (err) {
@@ -77,6 +96,30 @@ var app = new Vue({
 
             this.states = statesArr
 
+        },
+
+        getStates2: function () {
+            let statesArr = [];
+
+            this.congressmen.forEach(function (congressman) {
+                let stateCode = senator.state;
+                if (statesArr.includes(stateCode) === false) {
+                    statesArr.push(stateCode);
+                }
+
+            })
+
+            statesArr.sort();
+
+            this.states = statesArr
+
+        },
+
+        nextPage: function () {
+            if ((this.currentPage * this.pageSize) < this.congressmen.length) this.currentPage++;
+        },
+        prevPage: function () {
+            if (this.currentPage > 1) this.currentPage--;
         },
 
         sort: function (s) {
@@ -105,6 +148,28 @@ var app = new Vue({
                 if (a[this.sortKey] < b[this.sortKey]) return -1 * modifier;
                 if (a[this.sortKey] > b[this.sortKey]) return 1 * modifier;
                 return 0;
+            }).filter((row, index) => {
+                let start = (this.currentPage - 1) * this.pageSize;
+                let end = this.currentPage * this.pageSize;
+                if (index >= start && index < end) return true;
+            });
+        },
+        filteredMembers2: function () {
+            return this.congressmen.filter(congressman => {
+                let partyFilterValue = this.checkedParty.length == 0 || this.checkedParty.includes(congressman.party);
+                let stateFilterValue = this.selectedState == 'All' || this.selectedState == congressman.state;
+                let searchedName = this.searchName.length === 0 || (congressman.last_name.toLowerCase().indexOf(this.searchName.toLowerCase()) > -1)
+                return partyFilterValue && stateFilterValue && searchedName;
+            }).sort((a, b) => {
+                let modifier = 1;
+                if (this.currentSortDir === 'desc') modifier = -1;
+                if (a[this.sortKey] < b[this.sortKey]) return -1 * modifier;
+                if (a[this.sortKey] > b[this.sortKey]) return 1 * modifier;
+                return 0;
+            }).filter((row, index) => {
+                let start = (this.currentPage - 1) * this.pageSize;
+                let end = this.currentPage * this.pageSize;
+                if (index >= start && index < end) return true;
             });
         },
 
@@ -113,6 +178,7 @@ var app = new Vue({
 
     created: function () {
         this.fetchData();
+        this.fetchData2();
 
     },
 

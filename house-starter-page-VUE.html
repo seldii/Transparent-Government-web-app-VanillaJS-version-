@@ -9,7 +9,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <title>Senate</title>
+    <title>House</title>
 </head>
 
 
@@ -61,10 +61,12 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h2>Senators</h2>
-                <p>First convened in 1789, the composition and powers of the Senate are established in Article One of the U.S. Constitution. Each state is represented by two senators, regardless of population, who serve staggered six-year terms. The Senate has several exclusive powers not granted to the House, including consenting to treaties as a precondition to their ratification and consenting to or confirming appointments of Cabinet secretaries, federal judges, other federal executive officials, military officers, regulatory officials, ambassadors, and other federal uniformed officers, as well as trial of federal officials impeached by the House.</p>
+                <h2>Congressmen</h2>
+                <p>The major power of the House is to pass federal legislation that affects the entire country, although its bills must also be passed by the Senate and further agreed to by the U.S. President before becoming law (unless both the House and Senate re-pass the legislation with a two-thirds majority in each chamber). The House has some exclusive powers: the power to initiate revenue bills, to impeach officials (impeached officials are subsequently tried in the Senate), and to elect the U.S. President in case there is no majority in the Electoral College.</p>
+                <p>Each U.S. state is represented in the House in proportion to its population as measured in the census, but every state is entitled to at least one representative. </p>
             </div>
         </div>
+      
         <div class="container">
             <div id="app" class="row">
                 <div class="col-sm-12">
@@ -94,7 +96,7 @@
                         </div>
                         <table class="table">
                             <thead>
-                                <tr>
+                                 <tr>
                                     <th v-on:click="sort('last_name')">Senator <i class="fas fa-sort"></i>
                                     </th>
                                     <th v-on:click="sort('party')">Party Affilication  <i class="fas fa-sort"></i></th>
@@ -105,14 +107,14 @@
 
                             </thead>
                             <tbody>
-                                <tr v-for="senator in filteredMembers">
-                                    <td><a class='iframe_colorbox' target='_blank' :href="senator.url">{{senator.last_name}}, {{senator.middle_name}}
-                                            {{senator.first_name}}</a>
+                                <tr v-for="congressman in filteredMembers2">
+                                    <td><a class='iframe_colorbox' target='_blank' :href="congressman.url">{{congressman.last_name}}, {{congressman.middle_name}}
+                                            {{congressman.first_name}}</a>
                                     </td>
-                                    <td>{{senator.party}}</td>
-                                    <td>{{senator.state}}</td>
-                                    <td>{{senator.seniority}}</td>
-                                    <td>{{senator.votes_with_party_pct}}%</td>
+                                    <td>{{congressman.party}}</td>
+                                    <td>{{congressman.state}}</td>
+                                    <td>{{congressman.seniority}}</td>
+                                    <td>{{congressman.votes_with_party_pct}}%</td>
                                 </tr>
 
                             </tbody>

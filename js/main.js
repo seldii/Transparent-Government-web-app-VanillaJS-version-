@@ -32,6 +32,9 @@ if (document.title.indexOf("Senate") != -1) {
             document.getElementById("selectState").addEventListener("click", () => {
                 updateTable(senateData)
             });
+            document.forms["search-name"].querySelector("input").addEventListener('keyup', () => {
+                updateTable(senateData)
+            })
 
         })
         .catch(console.error);
@@ -62,6 +65,9 @@ if (document.title.indexOf("House") != -1) {
             document.getElementById("selectState").addEventListener("click", () => {
                 updateTable(houseData)
             });
+            document.forms["search-name"].querySelector("input").addEventListener('keyup', () => {
+                updateTable(houseData)
+            })
 
         })
         .catch(console.error);
@@ -77,10 +83,10 @@ function showLoader() {
                 </div>`;
     let loader = document.getElementById("loader");
     loader.insertAdjacentHTML("beforeend", spinner);
-    
+
 }
 
-function hideLoader () {
+function hideLoader() {
     let spinner = document.getElementById("loader");
     spinner.innerHTML = "";
 }
@@ -187,7 +193,7 @@ function populateDropdown(members) {
     statesArray.sort();
 
 
-    var firstOption = "<option id='dropdown-state' value='All'>-- All States --</option>";
+    var firstOption = "<option id='dropdown-state' value='All'>-- All--</option>";
     selectState.insertAdjacentHTML("beforeend", firstOption);
     for (var j = 0; j < statesArray.length; j++) {
         var newStateOption = "<option value='" + statesArray[j] + "'>" + statesArray[j] + "</option>";
@@ -205,6 +211,7 @@ function updateTable(members) {
 
 
     var filteredMembers = [];
+    var searchTerm = document.forms["search-name"].querySelector("input").value;
 
     selectedState = document.getElementById("selectState").value;
 
@@ -213,29 +220,36 @@ function updateTable(members) {
         return checkedBox.getAttribute('value');
     });
 
+    filteredMembers = members.filter(member => {
+        let partyFilterValue = checkedValues.length == 0 || checkedValues.includes(member.party);
+        let stateFilterValue = selectedState == 'All' || selectedState == member.state;
+        let searchName = searchTerm.length === 0 || (member.last_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1);
+
+        return partyFilterValue && stateFilterValue && searchName;
+    })
 
 
-    for (var i = 0; i < members.length; i++) {
+    /* for (var i = 0; i < members.length; i++) {
 
-        if ((checkedValues.length === 0) && (selectedState === "All")) {
-            filteredMembers = members;
-        } else if ((checkedValues.length != 0) && (selectedState === "All")) {
+         if ((checkedValues.length === 0) && (selectedState === "All")) {
+             filteredMembers = members;
+         } else if ((checkedValues.length != 0) && (selectedState === "All")) {
 
-            if (checkedValues.indexOf(members[i].party) > -1) {
-                filteredMembers.push(members[i]);
+             if (checkedValues.indexOf(members[i].party) > -1) {
+                 filteredMembers.push(members[i]);
 
-            }
-        } else if ((checkedValues.length === 0) && (selectedState != "All")) {
+             }
+         } else if ((checkedValues.length === 0) && (selectedState != "All")) {
 
-            if (selectedState === members[i].state) {
-                filteredMembers.push(members[i]);
+             if (selectedState === members[i].state) {
+                 filteredMembers.push(members[i]);
 
-            }
-        } else if (checkedValues.indexOf(members[i].party) > -1 && selectedState === members[i].state) {
-            filteredMembers.push(members[i]);
-        }
+             }
+         } else if (checkedValues.indexOf(members[i].party) > -1 && selectedState === members[i].state) {
+             filteredMembers.push(members[i]);
+         }
 
 
-    }
+     }*/
     generateTable(filteredMembers);
 }

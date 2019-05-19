@@ -269,7 +269,7 @@ function loyaltyAndEngagement(data) {
 
 var tbl = document.querySelector("#table");
 
-var senateAtAGlance = ["Party", "Number of Reps", "% Voted with Party"];
+var senateAtAGlance = ["Party", "Nº of Reps", "% Voted with Party"];
 
 
 
@@ -332,7 +332,7 @@ function generateTable() {
 
 var tblSecond = document.getElementById("leastEngaged");
 
-var engagementLevel = ["Name", "Number of Missed Votes", "% Missed"];
+var engagementLevel = ["Name", "Nº of Missed Votes", "% Missed"];
 
 
 var tblThird = document.getElementById("mostEngaged");
@@ -385,7 +385,7 @@ var tblSecondLoyalty = document.getElementById("leastLoyal");
 
 var tblThirdLoyalty = document.getElementById("mostLoyal");
 
-var loyaltyLevel = ["Name", "Number Party Votes", "% Party Votes"];
+var loyaltyLevel = ["Name", "Nº of Party Votes", "% Party Votes"];
 
 
 

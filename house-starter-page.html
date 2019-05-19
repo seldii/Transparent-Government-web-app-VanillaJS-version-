@@ -64,8 +64,8 @@
                 <p>Each U.S. state is represented in the House in proportion to its population as measured in the census, but every state is entitled to at least one representative. </p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-8 jumbotron">
+        <div class="row jumbotron bg-light">
+            <div class="col-sm-6">
                 <span>Filter by Party:</span>
                 <div class="form-check-inline">
                     <label class="form-check-label" for="Republican"><input type="checkbox" class="form-check-input" value="R" id="republicanCheckbox" name="mycheckboxes" data-filter="R">Republican</label>
@@ -79,9 +79,16 @@
                     <label class="form-check-label" for="Independent"><input type="checkbox" class="form-check-input" value="I" id="independentCheckbox" name="mycheckboxes" data-filter="I">Independent</label>
                 </div>
             </div>
-            <div class="col-sm-4 jumbotron">
+            <div class="col-sm-3">
                 <label for="selectedState">Filter by State:</label><select class="selectpicker show-menu-arrow show-tick" data-live-search="true" data-style="btn-info" id="selectState"></select>
 
+            </div>
+            <div class="col-sm-3">
+               <form id="search-name">
+               <label>
+                    <input type="text"  placeholder="Search by last name"/>
+               </label>
+                </form>
             </div>
 
         </div>
