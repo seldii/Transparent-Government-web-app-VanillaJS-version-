@@ -1,5 +1,5 @@
-const url = 'https://api.propublica.org/congress/v1/113/senate/members.json';
-const url2 = 'https://api.propublica.org/congress/v1/113/house/members.json';
+const urlSenate = 'https://api.propublica.org/congress/v1/113/senate/members.json';
+const urlHouse = 'https://api.propublica.org/congress/v1/113/house/members.json';
 const opts = {
     method: "GET",
     headers: {
@@ -8,72 +8,51 @@ const opts = {
     }
 }
 
+let headerArrHouse = ["Congressmen", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "]
+let headerArrSenate = ["Senator", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "];
 
-if (document.title.indexOf("Senate") != -1) {
+let url = "";
 
-    showLoader();
-    fetch(url, opts)
-        .then(res => res.json())
-        .then(function (senateData) {
-            senateData = senateData.results[0].members;
+
+if (document.title.includes("Senate")) {
+    url = urlSenate;
+    headerArr = headerArrSenate;
+} else if (document.title.includes("House")) {
+    url = urlHouse;
+    headerArr = headerArrHouse;
+};
+
+showLoader();
+fetch(url, opts)
+    .then(res => res.json())
+    .then(function (data) {
+        data = data.results[0].members;
+        if (document.title.includes("Senate") || document.title.includes("House")) {
             hideLoader();
-            createTHead(tbl, headerArrSenate);
-            generateTable(senateData);
-            populateDropdown(senateData);
+            createTHead(table, headerArr)
+            generateTable(data);
+            populateDropdown(data);
             document.getElementById("republicanCheckbox").addEventListener("click", () => {
-                updateTable(senateData)
+                updateTable(data)
             });
             document.getElementById("democratCheckbox").addEventListener("click", () => {
-                updateTable(senateData)
+                updateTable(data)
             });
             document.getElementById("independentCheckbox").addEventListener("click", () => {
-                updateTable(senateData)
+                updateTable(data)
             });
             document.getElementById("selectState").addEventListener("click", () => {
-                updateTable(senateData)
+                updateTable(data)
             });
             document.forms["search-name"].querySelector("input").addEventListener('keyup', () => {
-                updateTable(senateData)
-            })
-
-        })
-        .catch(console.error);
-
-}
-
-if (document.title.indexOf("House") != -1) {
-
-    showLoader();
-    fetch(url2, opts)
-        .then(res => res.json())
-        .then(function (houseData) {
-            houseData = houseData.results[0].members;
-            hideLoader();
-            createTHead(tbl, headerArrHouse);
-            generateTable(houseData);
-            populateDropdown(houseData);
-
-            document.getElementById("republicanCheckbox").addEventListener("click", () => {
-                updateTable(houseData)
+                updateTable(data)
             });
-            document.getElementById("democratCheckbox").addEventListener("click", () => {
-                updateTable(houseData)
-            });
-            document.getElementById("independentCheckbox").addEventListener("click", () => {
-                updateTable(houseData)
-            });
-            document.getElementById("selectState").addEventListener("click", () => {
-                updateTable(houseData)
-            });
-            document.forms["search-name"].querySelector("input").addEventListener('keyup', () => {
-                updateTable(houseData)
-            })
+        };
 
-        })
-        .catch(console.error);
+    })
+    .catch(console.error);
 
 
-}
 
 
 
@@ -104,8 +83,7 @@ var tblBody = document.createElement("tbody");
 var thead = document.createElement("thead");
 tbl.appendChild(tblBody);
 tbl.appendChild(thead);
-var headerArrHouse = ["Congressmen", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "]
-var headerArrSenate = ["Senator", "Party Affilication", "State", "Years in Ofiice", "% Votes w/ party "];
+
 
 
 //Table Header Method
@@ -221,12 +199,13 @@ function updateTable(members) {
     });
 
     filteredMembers = members.filter(member => {
+        let fullName = member.last_name + member.middle_name + member.first_name;
         let partyFilterValue = checkedValues.length == 0 || checkedValues.includes(member.party);
         let stateFilterValue = selectedState == 'All' || selectedState == member.state;
-        let searchName = searchTerm.length === 0 || (member.last_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1);
+        let searchName = searchTerm.length === 0 || (fullName.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1);
 
         return partyFilterValue && stateFilterValue && searchName;
-    })
+    });
 
 
     /* for (var i = 0; i < members.length; i++) {

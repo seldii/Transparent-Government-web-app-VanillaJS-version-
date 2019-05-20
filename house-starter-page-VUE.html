@@ -14,7 +14,7 @@
 
 
 <body>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-sm-4">
                 <a href="index.html"><img class="img-fluid" alt="Responsive image" src="images/LOGOTGIF.jpg"></a>
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="nav navbar-nav">
@@ -66,48 +66,62 @@
                 <p>Each U.S. state is represented in the House in proportion to its population as measured in the census, but every state is entitled to at least one representative. </p>
             </div>
         </div>
-      
-        <div class="container">
-            <div id="app" class="row">
-                <div class="col-sm-12">
-                    <div v-if="isLoading">
+
+        <div class="row" id="app">
+
+            <div v-if="isLoading" class="container">
+                <div class="row">
+                    <div class="col-sm-12">
                         <div class="spinner-grow" role="status" id="spinner">
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <div v-else>
+                </div>
+            </div>
+            <div v-else class="container">
+                <div class="row jumbotron">
+                    <div class="col-sm-6">
                         <span>Filter by Party:</span>
                         <div class="form-check-inline">
                             <label :key="ch.text" v-for="ch in checkboxOptions">{{ ch.text }}
                                 <input type="checkbox" class="form-check-input" v-model="checkedParty" :value="ch.value">
                             </label>
                         </div>
+                    </div>
+                    <div class="col-sm-6 float-right">
                         <label>
                             <span>Filter by State:</span>
                             <select v-model="selectedState">
-                                <option value="All" selected>--All--</option>
+                                <option value="All" selected>--All States--</option>
                                 <option v-for="state in states" type="dropdown" v-bind:value="state">{{state}}</option>
                             </select>
                         </label>
-                        <div class="float-right">
-                            <label>Search:
-                                <input type="text" v-model="searchName" placeholder="Search by last name" />
-                            </label>
-                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 d-flex flex-row-reverse">
+                        
+                            <input type="text" v-model="searchName" placeholder="Search..." />
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
                         <table class="table">
                             <thead>
-                                 <tr>
-                                    <th v-on:click="sort('last_name')">Senator <i class="fas fa-sort"></i>
+                                <tr>
+                                    <th v-on:click="sort('last_name')">Congressman <i class="fas fa-sort"></i>
                                     </th>
-                                    <th v-on:click="sort('party')">Party Affilication  <i class="fas fa-sort"></i></th>
-                                    <th v-on:click="sort('state')">State  <i class="fas fa-sort"></i></th>
-                                    <th v-on:click="sort('seniority')">Years in Ofiice  <i class="fas fa-sort"></i></th>
-                                    <th v-on:click="sort('votes_with_party_pct')">% Votes w/ party  <i class="fas fa-sort"></i></th>
+                                    <th v-on:click="sort('party')">Party Affilication <i class="fas fa-sort"></i></th>
+                                    <th v-on:click="sort('state')">State <i class="fas fa-sort"></i></th>
+                                    <th v-on:click="sort('seniority')">Years in Office <i class="fas fa-sort"></i></th>
+                                    <th v-on:click="sort('votes_with_party_pct')">% Votes w/ party <i class="fas fa-sort"></i></th>
                                 </tr>
 
                             </thead>
                             <tbody>
-                                <tr v-for="congressman in filteredMembers2">
+                                <tr v-for="congressman in filteredMembers">
                                     <td><a class='iframe_colorbox' target='_blank' :href="congressman.url">{{congressman.last_name}}, {{congressman.middle_name}}
                                             {{congressman.first_name}}</a>
                                     </td>
@@ -119,6 +133,11 @@
 
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item">
@@ -138,7 +157,11 @@
 
                     </div>
                 </div>
+
+
             </div>
+
+
         </div>
 
     </div>

@@ -1,5 +1,5 @@
-const url = 'https://api.propublica.org/congress/v1/113/senate/members.json';
-const url2 = 'https://api.propublica.org/congress/v1/113/house/members.json';
+const urlSenate = 'https://api.propublica.org/congress/v1/113/senate/members.json';
+const urlHouse = 'https://api.propublica.org/congress/v1/113/house/members.json';
 
 const opts = {
     method: "GET",
@@ -9,43 +9,34 @@ const opts = {
     }
 }
 
-if (document.title.indexOf("House") != -1) {
-    showLoader()
-    fetch(url2, opts)
-        .then(res => res.json())
-        .then(function (data) {
-            data = data.results[0].members;
-            hideLoader()
-            getPartyArr(data)
-            generateTable()
-            loyaltyAndEngagement(data)
-            myFunction()
+let url = "";
+//let headerArr = "";
 
-        })
-        .catch(console.error);
-
-}
+if (document.title.includes("Senate")) {
+    url = urlSenate;
+ 
+} else if (document.title.includes("House")) {
+    url = urlHouse;
+    
+};
 
 
-if (document.title.indexOf("Senate") != -1) {
-
+if (document.title.includes("Attendance") || document.title.includes("Loyalty") ) {
     showLoader()
     fetch(url, opts)
         .then(res => res.json())
         .then(function (data) {
-
             data = data.results[0].members;
             hideLoader()
             getPartyArr(data)
             generateTable()
             loyaltyAndEngagement(data)
-            myFunction()
-
+            createTableEngandLoy()
 
         })
         .catch(console.error);
 
-}
+};
 
 
 function showLoader() {
@@ -55,7 +46,7 @@ function showLoader() {
                     <span class="sr-only">Loading...</span>
                 </div>`
     })
-}
+};
 
 function hideLoader() {
     let loaders = document.getElementsByTagName("table");
@@ -63,7 +54,7 @@ function hideLoader() {
         loader.innerHTML = "";
     })
 
-}
+};
 
 
 
@@ -95,8 +86,7 @@ var statistic = {
     }
 
 
-}
-
+};
 
 
 function getPartyArr(data) {
@@ -334,7 +324,6 @@ var tblSecond = document.getElementById("leastEngaged");
 
 var engagementLevel = ["Name", "Nº of Missed Votes", "% Missed"];
 
-
 var tblThird = document.getElementById("mostEngaged");
 
 
@@ -389,10 +378,6 @@ var loyaltyLevel = ["Name", "Nº of Party Votes", "% Party Votes"];
 
 
 
-
-
-
-
 function generateTableLoyalty(membersArr, table) {
 
 
@@ -426,7 +411,7 @@ function generateTableLoyalty(membersArr, table) {
 
 
 
-function myFunction() {
+function createTableEngandLoy() {
 
     if (document.title.includes("Party Loyalty")) {
         var leastLoyalMembers = JSON.parse(statistic.Total.LeastLoyalGuys);
@@ -435,7 +420,6 @@ function myFunction() {
         generateTableLoyalty(leastLoyalMembers, tblSecondLoyalty)
         generateTableLoyalty(mostLoyalMembers, tblThirdLoyalty)
     }
-
 
 
 
@@ -454,67 +438,4 @@ function myFunction() {
 
 
 
-/*
-
-var TableIDvalue = "leastLoyal";
-
-//
-//////////////////////////////////////
-var TableLastSortedColumn = -1;
-
-function SortTable() {
-    var sortColumn = parseInt(arguments[0]);
-    var type = arguments.length > 1 ? arguments[1] : 'T';
-    var dateformat = arguments.length > 2 ? arguments[2] : '';
-    var table = document.getElementById(TableIDvalue);
-    var tbody = table.getElementsByTagName("tbody")[0];
-    var rows = tbody.getElementsByTagName("tr");
-    var arrayOfRows = new Array();
-    type = type.toUpperCase();
-    dateformat = dateformat.toLowerCase();
-    for (var i = 0, len = rows.length; i < len; i++) {
-        arrayOfRows[i] = new Object;
-        arrayOfRows[i].oldIndex = i;
-        var celltext = rows[i].getElementsByTagName("td")[sortColumn].innerHTML.replace(/<[^>]*>/g, "");
-        if (type == 'D') {
-            arrayOfRows[i].value = GetDateSortingKey(dateformat, celltext);
-        } else {
-            var re = type == "N" ? /[^\.\-\+\d]/g : /[^a-zA-Z0-9]/g;
-            arrayOfRows[i].value = celltext.replace(re, "").substr(0, 25).toLowerCase();
-        }
-    }
-    if (sortColumn == TableLastSortedColumn) {
-        arrayOfRows.reverse();
-    } else {
-        TableLastSortedColumn = sortColumn;
-        switch (type) {
-            case "N":
-                arrayOfRows.sort(CompareRowOfNumbers);
-                break;
-            case "D":
-                arrayOfRows.sort(CompareRowOfNumbers);
-                break;
-            default:
-                arrayOfRows.sort(CompareRowOfText);
-        }
-    }
-    var newTableBody = document.createElement("tbody");
-    for (var i = 0, len = arrayOfRows.length; i < len; i++) {
-        newTableBody.appendChild(rows[arrayOfRows[i].oldIndex].cloneNode(true));
-    }
-    table.replaceChild(newTableBody, tbody);
-} // function SortTable()
-
-function CompareRowOfText(a, b) {
-    var aval = a.value;
-    var bval = b.value;
-    return (aval == bval ? 0 : (aval > bval ? 1 : -1));
-} // function CompareRowOfText()
-
-function CompareRowOfNumbers(a, b) {
-    var aval = /\d/.test(a.value) ? parseFloat(a.value) : 0;
-    var bval = /\d/.test(b.value) ? parseFloat(b.value) : 0;
-    return (aval == bval ? 0 : (aval > bval ? 1 : -1));
-}
-*/
 
