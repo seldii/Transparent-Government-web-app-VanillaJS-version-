@@ -72,20 +72,20 @@
             <div class="col-sm-5">
                 <h3 class="float-right">Senate at a glance</h3>
                 <table class="table" id="glanceTable">
-                <thead>
-                    <tr>
-                        <th>Party</th>
-                        <th>Nº of Reps</th>
-                        <th>% Voted with Party</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(value, name) in statistic">
-                        <td>{{name}}</td>
-                        <td>{{name.NoOfReps}}</td>
-                        <td>{{name.AveVotedWParty}}</td>
-                    </tr>
-                </tbody>
+                    <thead>
+                        <tr>
+                            <th>Party</th>
+                            <th>Nº of Reps</th>
+                            <th>% Voted with Party</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(value, name) in statistic">
+                            <td>{{name}}</td>
+                            <td>{{value.NoOfReps}}</td>
+                            <td>{{value.AveVotedWParty}}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
@@ -97,13 +97,44 @@
             <div class="col-sm-6">
                 <h3>Least Engaged <small>(Bottom 10% Attendance)</small></h3>
                 <table class="table" id="leastEngaged">
+                    <thead>
+                        <tr>
+                            <th @click="sort('last_name')">Name</th>
+                            <th @click="sort('missed_votes')">Nº of Missed Votes</th>
+                            <th @click="sort('missed_votes_pct')">% Missed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="guy in sortedMembers">
+                            <td><a :href="guy.url">{{guy.last_name}}, {{guy.middle_name}} {{guy.first_name}}
+                            </a></td>
+                            <td>{{guy.missed_votes}}</td>
+                            <td>{{guy.missed_votes_pct}}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
 
             <div class="col-sm-6">
                 <h3>Most Engaged <small>(Top 10% Attendance)</small></h3>
-                <table class="table" id="mostEngaged"></table>
+                <table class="table" id="mostEngaged">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Nº of Missed Votes</th>
+                            <th>% Missed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="guy in statistic.Total.MostEngagedGuys">
+                            <td><a :href="guy.url">{{guy.last_name}}, {{guy.middle_name}} {{guy.first_name}}
+                            </a></td>
+                            <td>{{guy.missed_votes}}</td>
+                            <td>{{guy.missed_votes_pct}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
         </div>
