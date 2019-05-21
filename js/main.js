@@ -57,9 +57,10 @@ fetch(url, opts)
 
 
 function showLoader() {
-    let spinner = `<div class="spinner-grow" role="status" id="spinner">
-                    <span class="sr-only" >Loading...</span>
-                </div>`;
+    let spinner = `<div class="d-flex justify-content-center"><div class="spinner-grow" role="status" id="spinner">
+    <span class="sr-only" >Loading...</span>
+    </div>
+    </div>`;
     let loader = document.getElementById("loader");
     loader.insertAdjacentHTML("beforeend", spinner);
 
@@ -187,16 +188,19 @@ function populateDropdown(members) {
 
 function updateTable(members) {
 
-
     var filteredMembers = [];
+
     var searchTerm = document.forms["search-name"].querySelector("input").value;
 
     selectedState = document.getElementById("selectState").value;
 
     var checkedBoxes = Array.from(document.querySelectorAll('input[name=mycheckboxes]:checked'));
+    console.log(checkedBoxes);
     var checkedValues = checkedBoxes.map(function (checkedBox) {
         return checkedBox.getAttribute('value');
     });
+
+    console.log(checkedValues);
 
     filteredMembers = members.filter(member => {
         let fullName = member.last_name + member.middle_name + member.first_name;
@@ -207,28 +211,16 @@ function updateTable(members) {
         return partyFilterValue && stateFilterValue && searchName;
     });
 
-
-    /* for (var i = 0; i < members.length; i++) {
-
-         if ((checkedValues.length === 0) && (selectedState === "All")) {
-             filteredMembers = members;
-         } else if ((checkedValues.length != 0) && (selectedState === "All")) {
-
-             if (checkedValues.indexOf(members[i].party) > -1) {
-                 filteredMembers.push(members[i]);
-
-             }
-         } else if ((checkedValues.length === 0) && (selectedState != "All")) {
-
-             if (selectedState === members[i].state) {
-                 filteredMembers.push(members[i]);
-
-             }
-         } else if (checkedValues.indexOf(members[i].party) > -1 && selectedState === members[i].state) {
-             filteredMembers.push(members[i]);
-         }
-
-
-     }*/
     generateTable(filteredMembers);
+    
+    if (filteredMembers.length === 0) {
+
+    document.getElementById("noresult").style.display = "block";
+} else {
+    document.getElementById("noresult").style.display = "none";
 }
+
+
+};
+
+

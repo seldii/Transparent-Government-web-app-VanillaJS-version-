@@ -17,3 +17,9 @@ a {
     border-top:none !important;
    
 }
+
+.not-found{
+    text-align: center;
+    font-size: 1.5em;
+    color: darkgray;
+}
